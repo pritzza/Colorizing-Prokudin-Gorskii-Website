@@ -55,76 +55,64 @@
             </p>
             <p>
                 The goal of this project is to restore these historic images by digitally aligning and combining the
-                three separate color channels. This report outlines the algorithm used for aligning and colorizing the
-                images and presents the results of applying this method to several images from the Prokudin-Gorskii
+                color channels. This report outlines the algorithm and techniques used for aligning and colorizing the
+                images, presenting the results of these methods to some of the images in the Prokudin-Gorskii
                 collection.
             </p>
 
             <h2 id="algorithm">Algorithm</h2>
             <p>
-                The process of colorizing the Prokudin-Gorskii images involves several distinct steps, each designed to
-                ensure accurate alignment and color reconstruction. The key challenge is aligning the three separate
-                channels so that when combined, they form a cohesive and correctly colored image. To address this, our
-                algorithm follows the workflow described below:
+                The process of colorizing the Prokudin-Gorskii images involves several distinct steps. Each step is
+                designed to algorithmically guarantee the proper construction of each colored image. The greatest
+                challenge is taking into account the slight offset spatially, angularly, and temporally between photos,
+                creating the need to align the three separate channels to create a cohesive colored image. To address
+                this, our algorithm goes as follows:
             </p>
 
             <ul>
                 <li>
                     <b>
-                        Splitting the Image into Channels
+                        Splitting the Image into Channels:
                     </b>
-                    The original digitized photographs consist of three vertically stacked black-and-white images. These
-                    correspond to the red, green, and blue channels. The first step is to separate the image into its
-                    constituent parts.
+                    The original digitized photographs consist of three vertically stacked black-and-white images. From
+                    top to bottom, these correspond to the blue, green, and red color channels. The first step is to
+                    split the image into its constituent parts.
                 </li>
                 <li>
                     <b>
-                        Aligning the Channels
+                        Aligning the Channels:
                     </b>
-                    The key challenge is to align the three channels. Since the photos were taken sequentially, small
-                    shifts due to camera movement or changes in the environment are common. A successful alignment
-                    requires identifying the best spatial offset between the channels to minimize visual artifacts and
-                    create a seamless color image.
+                    Since the photos were taken sequentially, small shifts due to camera movement or changes in the
+                    environment are common. Successful alignment requires identifying the best spatial offset between
+                    the channels to minimize visual artifacts and create a seamless color image.
                 </li>
                 <li>
                     <b>
-                        Combining the Channels
+                        Combining the Channels:
                     </b>
                     Once the channels are aligned, the final step is to merge them into a single color image using the
-                    red, green, and blue data to reconstruct the full-color photograph.
+                    three color channels to construct the full-color photograph.
                 </li>
             </ul>
 
             <h3>Step 1: Image Splitting</h3>
             <p>
-                The raw image is split into three channels: red, green, and blue. Each channel occupies one-third of the
-                image height.
-                Given the image dimensions \( H \times W \), the sections are:
+                The raw image is split into its three channels: blue, green, and red (from top to bottom). Since each
+                channel occupies one-third of the image height, given the image dimensions are
+                \( H \times W \), we can easily divide the sections:
             </p>
             <p>
                 \[
-                I_R = I[0 : \frac{H}{3}], \quad I_G = I[\frac{H}{3} : \frac{2H}{3}], \quad I_B = I[\frac{2H}{3} : H]
+                I_B = I[0 : \frac{H}{3}], \quad I_G = I[\frac{H}{3} : \frac{2H}{3}], \quad I_R = I[\frac{2H}{3} : H]
                 \]
             </p>
 
             <h3>Step 2: Alignment Using Pyramid</h3>
             <p>
-                The images are aligned using a pyramid of progressively downsampled versions. At each pyramid level \( i
-                \), the image is downscaled using:
-            </p>
-            <p>
-                \[
-                I_i = \text{pyramid_down}(I_{i-1})
-                \]
-            </p>
-            <p>
-                The alignment begins at the lowest resolution and iteratively refines the offset at each level.
-            </p>
-
-            <h4>L2 Error for Alignment</h4>
-            <p>
-                The alignment is based on minimizing the L2 distance between the edge maps of the fixed and aligning
-                images, computed using the Sobel filter.
+                Images which are too large to be directly compared must be downscaled. The downscaled versions of the
+                images are aligned first then at higher resolutions. Starting at the lowest resolution and iteratively
+                refines the offset at each level. It is based on minimizing the L2 distance between the edge maps of the
+                fixed and aligning images, computed using the Sobel filter. The error for a given offset
                 The error for a given offset \( (\Delta x, \Delta y) \) is:
             </p>
             <p>
@@ -158,7 +146,7 @@
             <h2 id="results">Results</h2>
             <p>
                 We tested our algorithm on a selection of images from the Prokudin-Gorskii collection. Below are some
-                examples of the restored images, showcasing the effectiveness of our approach in bringing these historic
+                examples of the restored images, showcasing the effectiveness of our approach in bringing these
                 black-and-white photographs to life in color:
             </p>
 
@@ -325,16 +313,10 @@
             <h2 id="conclusion">Conclusion</h2>
             <p>
                 The colorization of the Prokudin-Gorskii photo collection provides a unique opportunity to revisit early
-                20th-century Russia in color. Through the use of advanced image processing techniques, such as pyramid
-                alignment and edge-based matching, the original black-and-white negatives have been transformed into
-                vivid and historically significant color photographs. The restoration not only preserves the legacy of
-                Prokudin-Gorskii’s work but also offers a modern audience a glimpse into the past in a way that was
-                previously unimaginable.
-            </p>
-            <p>
-                Future improvements could focus on automating the process further and exploring ways to enhance the
-                color accuracy and fidelity of the reconstructed images. Nonetheless, this project successfully
-                showcases how modern technology can resurrect the lost colors of a bygone era.
+                20th-century Russia in color. Through the use of image processing techniques, such as pyramid alignment
+                and edge-based matching, the original black-and-white negatives have been transformed into vivid and
+                historically significant color photographs. Nonetheless, this project successfully showcases how modern
+                technology can resurrect the lost colors of a bygone era.
             </p>
 
         </div>
